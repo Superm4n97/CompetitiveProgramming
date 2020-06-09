@@ -1,42 +1,29 @@
 #include<bits/stdc++.h>
 #define ll long long int
-#define pb push_back
+#define show(x) cout << #x << " : " << x << endl
+#define maxn 2000006
 
 using namespace std;
 
-vector < pair < ll, ll > > vp;
 
-ll NOD(ll a)
-{
-      ll cnt = 0;
-      for (int i=1;i*i<=a;i++){
-            if (a%i==0){
-                  if (i == a/i)cnt++;
-                  else cnt+=2;
-            }
-      }
-      return cnt;
-}
 
 int main()
 {
-      for (int i=1 ; i<=1000 ; i++){
-            vp.pb({NOD(i),i*-1});
+      ll A[6] , sum = 0;
+
+      for (int i=1 ; i<=4;i++){
+            cin >> A[i];
+            sum+=A[i];
       }
-
-      sort(vp.begin(),vp.end());
-
-      int tc;
-      cin >>tc;
-
-      for (int _t = 1 ; _t<=tc ; _t++){
-            ll n;
-            cin >> n;
-
-            cout << "Case "<< _t<< ": " << vp[n-1].second*-1 << endl;
+      bool solution =false;
+      for (int i=1 ; i<=4 ; i++){
+            for (int j = i+1 ; j<=4 ; j++){
+                  if ((A[i]+A[j])*2 == sum)solution = true;
+            }
       }
+      cout << (solution?"YES":"NO") << endl;
+
 
 
       return 0;
 }
-

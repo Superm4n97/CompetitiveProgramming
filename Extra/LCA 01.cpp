@@ -8,94 +8,71 @@
 #define srt(a)          sort(a.begin(),a.end())
 #define rsrt(a)         sort(a.rbegin(),a.rend())
 #define scll(a,b)       scanf("%I64d %I64d",&a,&b)
-///4direction ->        int dx[]={-1,0,1,0},dy[]={0,1,0,-1};
+///4direction ->        int del_x[]={-1,0,1,0},del_y[]={0,1,0,-1};
 #define input(v,n)      for (int i=0;i<n;i++){int a;cin >> a;v.push_back(a);}
 #define inputll(v,n)    for (ll i=0;i<n;i++){ll a;cin >> a;v.push_back(a);}
 #define vii             vector < int >
 #define vll             vector < ll >
 #define pii             pair < int , int >
 #define mk              make_pair
+#define inf8            100000008
 
 using namespace std;
 
 int n;
-vector < int > tree[100002];
-int sparseTable[100002][22];
-int level[100002];
-int parent[100002];
+vii G[100];
+int L[100] , MX[100] , S[100][10];
 
-void buildlevel(int from, int node, int lvl)
+void bfs()
 {
-    level[node] = lvl;
-    for (int i=0;i<tree[node].size();i++){
-        int v = tree[node][i];
-        if (v==from)continue;
-        parent[v] = node;
-        buildlevel(node,v,lvl+1);
-    }
-}
+    queue < int > q;
+    q.push(1);
+    L[1] = 0;
 
-void buildSparseTable()
-{
-    sparseTable[1][0]=-1;
-    for (int i=1;i<=n;i++)sparseTable[i][0] = parent[i];
+    while(!q.empty()){
+        int u = q.front();
+        q.pop();
 
-    for (int j=1;(1<<j)<=n;j++){
-        for (int i=1;i<=n;i++){
-            sparseTable[i][j] = sparseTable[sparseTable[i][j-1]][j-1];
+        for (int i=0;i<G[u].size()){
+            int v = q.pop();
+
+            if (L[v]>L[u]+1){
+                L[v] = L[u]+1;
+                S[v][0] = u;
+                MX[v] = max(A[v],MX[u]);
+                q.push(v);
+            }
         }
     }
-}
-
-int lcaQuery(int a, int b)
-{
-    if (level[a]<level[b])swap(a,b);
-    int log = 0;
-    while(1){
-        if ((1<<log)>n)break;
-        log++;
-    }
-    //cout << "log " << log << endl;
-    for (int i=log;i>=0;i--){
-        if (level[a]-(1<<i)>=level[b]){
-            a = sparseTable[a][i];
-        }
-    }
-    //cout << "ok 1" << endl;
-    if (a==b)return a;
-    //cout << "a = " <<a << "    b = " <<b <<  "    level[a] " << level[a] << "      level[b] " << level[b] << endl;
-
-    for (int i=log;i>=0;i--){
-        if (sparseTable[a][i]!=sparseTable[b][i] && sparseTable[a][i]!=-1){
-            a = sparseTable[a][i] , b= sparseTable[b][i];
-        }
-    }
-    return parent[a];
 }
 
 int main()
 {
-    cout << "Enter nodes of the tree : ";
-    cin >> n;
-    cout << "Enter n-1 edges :"<< endl;
+    scd(n);
+    for (int i=0;i<=n;i++)P[i] = i;
+
     for (int i=1;i<n;i++){
         int a,b;
-        cin >> a >> b;
-        tree[a].pb(b);
-        tree[b].pb(a);
+        scdd(a,b);
+
+        G[a].pb(b);
+        G[b].pb(a);
+    }
+    bfs();
+    for (int j=0;j<8;j++){
+        for (int i=1;i<=n;i++){
+            int tut = 1<<j;
+            S[i][j+1] = S[S[i][j]][j];
+        }
     }
 
-    parent[1]=1;
-    buildlevel(1,1,0);
-    buildSparseTable();
-
-    cout << "Enter number of query : ";
     int q;
-    cin >> q;
-    for (int i=0;i<q;i++){
-        int a, b;
-        cin >> a >> b;
-        cout << lcaQuery(a,b) << endl;
+    scd(q);
+
+    for (int t=0;t<q;t++){
+        int a,b;
+        scdd(a,b);
+
     }
 
     return 0;
