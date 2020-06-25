@@ -25,6 +25,15 @@ using namespace std;
 
 int main()
 {
+      int tc;
+      cin >> tc;
+
+      while(tc--){
+            ll n;
+            cin >> n;
+
+            cout << (n%4?"NO":"YES") << endl;
+      }
 
 
 

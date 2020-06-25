@@ -25,6 +25,30 @@ using namespace std;
 
 int main()
 {
+      ll tc;
+      cin >> tc;
+
+      while(tc--){
+            ll zero = 0 , one = 0 , n;
+            cin >> n;
+            string s;
+
+            cin >> s;
+
+            for (int i=0;i<s.size();i++){
+                  if (s[i]=='1')break;
+                  zero++;
+                  cout << 0;
+            }
+            for (int i=s.size()-1 ; i>=0 ; i--){
+                  if (s[i]=='0')break;
+                  one++;
+            }
+            if (zero+one !=s.size())cout << 0;
+
+            for (int i=0;i<one;i++)cout << 1;
+            cout << endl;
+      }
 
 
 
